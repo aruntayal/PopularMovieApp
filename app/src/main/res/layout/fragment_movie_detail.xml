@@ -1,0 +1,164 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        android:orientation="vertical"
+        tools:context=".Fragments.MovieDetailActivityFragment"
+        tools:showIn="@layout/activity_movie_detail">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#fafafa">
+
+        <ImageView
+            android:id="@+id/movie_backdropImg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#fafafa"
+            android:scaleType="fitXY"
+            />
+
+
+        <ImageView
+            android:id="@+id/movie_detail_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:elevation="30dp"
+            android:background="@color/cardview_shadow_start_color"
+            android:padding="10dp"
+            android:visibility="gone"/>
+
+        </FrameLayout>
+
+       <GridLayout
+           android:layout_width="240dp"
+           android:layout_height="wrap_content"
+           android:rowCount="1"
+           android:columnCount="6"
+           android:layout_marginTop="20dp"
+          android:layout_gravity="center"
+
+           >
+
+           <ImageView
+               android:id="@+id/rating_img"
+               android:src="@drawable/ic_star_black_24dp"
+               android:layout_gravity="center"
+               />
+
+           <TextView
+               android:id="@+id/rating_num"
+               android:textSize="20dp"
+               android:textStyle="bold" />
+           <TextView
+               android:id="@+id/rating_oblique"
+               android:text="/"
+               android:textSize="20dp"
+               android:textStyle="bold"/>
+           <TextView
+               android:id="@+id/rating_denom"
+               android:text="10"
+               android:textSize="20dp"
+               android:textStyle="bold"
+               android:layout_marginRight="5dp"/>
+           <ImageView
+               android:id="@+id/release_img"
+               android:src="@drawable/ic_date_range_black_24dp"
+               android:layout_gravity="center"
+               />
+
+           <TextView
+               android:id="@+id/release_date"
+               android:textSize="20dp"
+               android:textStyle="bold"/>
+
+       </GridLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/overviewText"
+            android:text="@string/plot_synopsis"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            />
+         <TextView
+            android:id="@+id/movie_detail_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:layout_margin="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trailerText"
+            android:text="@string/Trailers"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            card_view:cardElevation="16dp"
+            card_view:cardCornerRadius="5dp"
+           >
+
+            <GridView
+                android:id="@+id/trailer_grid"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:columnWidth="@dimen/grid_item_movie_width"
+                android:horizontalSpacing="@dimen/grid_item_movie_spacing"
+                android:numColumns="auto_fit"
+                android:verticalSpacing="@dimen/grid_item_movie_spacing"
+                android:nestedScrollingEnabled="true"
+
+                />
+        </android.support.v7.widget.CardView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ReviewText"
+            android:text="@string/Review"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            card_view:cardElevation="16dp"
+            card_view:cardCornerRadius="5dp">
+
+
+            <ListView
+                android:id="@+id/movie_review_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?android:dividerHorizontal"
+                android:showDividers="middle"
+                android:nestedScrollingEnabled="true"
+                />
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>
