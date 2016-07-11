@@ -22,7 +22,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             Bundle arguments = new Bundle();
             arguments.putParcelable(MovieDetailActivityFragment.DETAIL_MOVIE, getIntent().getData());
-           // Log.e("ARUN#########",getIntent().getData().toString());
+
             MovieDetailActivityFragment fragment = new MovieDetailActivityFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

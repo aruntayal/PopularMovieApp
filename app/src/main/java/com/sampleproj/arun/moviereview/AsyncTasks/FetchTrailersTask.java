@@ -42,7 +42,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String[]> {
 
         JSONObject movieJson = new JSONObject(TrailerJsonStr);
         JSONArray TrailerArray = movieJson.getJSONArray(TMD_RESULT);
-        Log.e(LOG_TAG, "JSONARRAY length is " + Integer.toString(TrailerArray.length()));;
+
         Vector<ContentValues> cVVector = new Vector<ContentValues>(TrailerArray.length());
 
         for(int i = 0; i < TrailerArray.length(); i++) {
@@ -59,8 +59,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String[]> {
             trailerValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_ID, trailer_id);
             trailerValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_KEY, key);
 
-            String resultStr = movie_id + "#####" + trailer_id + "#####" + key;
-            Log.e(LOG_TAG,resultStr);
             cVVector.add(trailerValues);
 
             int inserted = 0;
@@ -89,11 +87,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, String[]> {
         // Will contain the raw JSON response as a string.
         String movieJsonStr = null;
 
-            /*String format = "json";
-            String units = "metric";
-            int numDays = 7;*/
-
-        try {
+          try {
             final String POP_MOVIE_TRAILER_URL = "http://api.themoviedb.org/3/movie/" + params[0] + "/videos";
             final String API_KEY = "api_key";
             Uri builtUri = Uri.parse(POP_MOVIE_TRAILER_URL).buildUpon()

@@ -36,14 +36,14 @@ import com.squareup.picasso.Picasso;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MovieDetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MovieDetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = "LOG_" + MovieDetailActivityFragment.class.getSimpleName();
     private final String YOU_TUBE_URL = "https://www.youtube.com/watch?v=";
     public static final String TAG = MovieDetailActivityFragment.class.getSimpleName();
     private String shareTrailer;
     public static final String DETAIL_MOVIE = "DETAIL_MOVIE";
-    private ImageView mPosterImage;
+
     private ImageView mBackDropImage;
     private TextView mOverView;
     private ListView mReviewList;
@@ -64,7 +64,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
     public static final int COL_TRAILER_KEY = 3;
 
-   ToggleFavouriteTask toggleFavTask;
+    ToggleFavouriteTask toggleFavTask;
 
     public MovieDetailActivityFragment() {
         setHasOptionsMenu(true);
@@ -75,25 +75,25 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v(LOG_TAG,"OnCreateView Called");
-         rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-      mPosterImage = (ImageView)rootView.findViewById(R.id.movie_detail_poster);
-        mBackDropImage = (ImageView)rootView.findViewById(R.id.movie_backdropImg);
-        mOverView =(TextView)rootView.findViewById(R.id.movie_detail_overview);
-       mRatingNum = (TextView)rootView.findViewById(R.id.rating_num);
-        mReleaseDate = (TextView)rootView.findViewById(R.id.release_date);
-        mReviewList = (ListView)rootView.findViewById(R.id.movie_review_list);
-        mTrailerGrid = (GridView)rootView.findViewById(R.id.trailer_grid);
+        Log.v(LOG_TAG, "OnCreateView Called");
+        rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+
+        mBackDropImage = (ImageView) rootView.findViewById(R.id.movie_backdropImg);
+        mOverView = (TextView) rootView.findViewById(R.id.movie_detail_overview);
+        mRatingNum = (TextView) rootView.findViewById(R.id.rating_num);
+        mReleaseDate = (TextView) rootView.findViewById(R.id.release_date);
+        mReviewList = (ListView) rootView.findViewById(R.id.movie_review_list);
+        mTrailerGrid = (GridView) rootView.findViewById(R.id.trailer_grid);
 
         mTrailerGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
-                                                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                                                 String trailer_key = cursor.getString(COL_TRAILER_KEY);
-                                                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                 intent.setData(Uri.parse("http://www.youtube.com/watch?v=" + trailer_key));
-                                                 startActivity(intent);
-        }
-                                         });
+            public void onItemClick(AdapterView adapterView, View view, int position, long l) {
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                String trailer_key = cursor.getString(COL_TRAILER_KEY);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://www.youtube.com/watch?v=" + trailer_key));
+                startActivity(intent);
+            }
+        });
 
         mReviewAdapter = new ReviewAdapter(getActivity(), null, 0);
         mReviewList.setAdapter(mReviewAdapter);
@@ -105,31 +105,41 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
         Bundle arguments = getArguments();
         if (arguments != null) {
             mUri = arguments.getParcelable(MovieDetailActivityFragment.DETAIL_MOVIE);
+        } else {
+            HideAllUIComponents();
         }
         if (mUri != null) {
             mMovieStr = mUri.toString();
             mMovieId = MovieContract.MovieEntry.getMovieFromUri(mMovieStr);
+        } else {
+            HideAllUIComponents();
         }
         mIsFavourite = 0L;
         return rootView;
     }
 
-    public void updateReviews()
-    {
+    public void HideAllUIComponents() {
+
+        rootView.setVisibility(View.GONE);
+
+    }
+
+    public void updateReviews() {
         new FetchReviewsTask(getContext()).execute(Long.toString(mMovieId));
     }
 
-    public void updateTrailers()
-    {
+    public void updateTrailers() {
         new FetchTrailersTask(getContext()).execute(Long.toString(mMovieId));
     }
+
     public void onStart() {
         super.onStart();
         if (mMovieStr != null) {
 
-           updateReviews();
+            updateReviews();
             updateTrailers();
-        };
+        }
+        ;
     }
 
     @Override
@@ -145,7 +155,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_movie_detail, menu);
-       Log.e(LOG_TAG,"onCreateOptionsMenu");
+        Log.e(LOG_TAG, "onCreateOptionsMenu");
         // Retrieve the share menu item
         MenuItem shareMenuItem = menu.findItem(R.id.action_share);
         is_fvourite = menu.findItem(R.id.action_favourite);
@@ -162,10 +172,10 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
         // Attach an intent to this ShareActionProvider.  You can update this at any time,
         // like when the user selects a new piece of data they might like to share.
-        if (mShareActionProvider != null ) {
+        if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(createShareMovieIntent());
         } else {
-            Log.e("ARUN", "Share Action Provider is null?");
+            Log.e(LOG_TAG, "Share Action Provider is null?");
         }
     }
 
@@ -173,15 +183,15 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
         int id = item.getItemId();
         switch (id) {
             case R.id.action_favourite:
-                Log.e(LOG_TAG,"onOptionsItemSelected action_favourite");
-                toggleFavTask = new ToggleFavouriteTask(getActivity(),is_fvourite);
-                toggleFavTask.execute(mMovieId.toString(),mIsFavourite.toString());
-                if(mIsFavourite == 0L)
+                Log.e(LOG_TAG, "onOptionsItemSelected action_favourite");
+                toggleFavTask = new ToggleFavouriteTask(getActivity(), is_fvourite);
+                toggleFavTask.execute(mMovieId.toString(), mIsFavourite.toString());
+                if (mIsFavourite == 0L)
                     mIsFavourite = 1L;
                 else
                     mIsFavourite = 0L;
 
-                  return true;
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -193,7 +203,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT,
-                shareTrailer );
+                shareTrailer);
         return shareIntent;
     }
 
@@ -201,12 +211,11 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(LOG_TAG, "In onCreateLoader");
 
-        if (mUri == null ){
+        if (mUri == null) {
             return null;
         }
 
-        switch(id)
-        {
+        switch (id) {
             case MOVIE_DETAIL_LOADER_ID:
                 // Now create and return a CursorLoader that will take care of
                 // creating a Cursor for the data being displayed.
@@ -219,8 +228,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
                         null
                 );
 
-            case MOVIE_REVIEW_LOADER_ID:
-            {
+            case MOVIE_REVIEW_LOADER_ID: {
 
                 return new CursorLoader(
                         getActivity(),
@@ -232,9 +240,8 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
                 );
 
             }
-            case MOVIE_TRAILER_LOADER_ID:
-            {
-                Log.e(LOG_TAG,"MOVIE_TRAILER_LOADER_ID Created");
+            case MOVIE_TRAILER_LOADER_ID: {
+                Log.e(LOG_TAG, "MOVIE_TRAILER_LOADER_ID Created");
                 return new CursorLoader(
                         getActivity(),
                         MovieContract.TrailerEntry.buildTrailerUri(Long.toString(mMovieId)),
@@ -252,12 +259,14 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-     Log.e(LOG_TAG,"OnLoadFinished");
-        if (!cursor.moveToFirst()) { return; }
+        Log.e(LOG_TAG, "OnLoadFinished");
+        if (!cursor.moveToFirst()) {
+            return;
+        }
 
         switch (cursorLoader.getId()) {
-            case MOVIE_REVIEW_LOADER_ID:{
-                Log.e(LOG_TAG,"MOVIE_REVIEW_LOADER_ID");
+            case MOVIE_REVIEW_LOADER_ID: {
+                Log.e(LOG_TAG, "MOVIE_REVIEW_LOADER_ID");
                 mReviewAdapter.swapCursor(cursor);
                 break;
             }
@@ -273,17 +282,14 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
                 int FvtColIdx = cursor.getColumnIndex("is_favourite");
                 mIsFavourite = cursor.getLong(FvtColIdx);
                 String mov_backdrop_path = cursor.getString(MovieFragment.COL_MOVIE_BACKDROP);
-                Log.e(LOG_TAG,"Backdrop is is " + mov_backdrop_path);
 
-                ((AppCompatActivity)getActivity()).invalidateOptionsMenu();
 
-                if(mov_name != null) {
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mov_name);
+                ((AppCompatActivity) getActivity()).invalidateOptionsMenu();
+
+                if (mov_name != null) {
+                    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mov_name);
                 }
                 mOverView.setText(mov_desc);
-                String poster_path = "http://image.tmdb.org/t/p/w185/" + mov_poster_path;
-                Picasso.with(getActivity()).load(poster_path).error(R.mipmap.ic_launcher).into(mPosterImage);
-
 
                 String backdrop_path = "http://image.tmdb.org/t/p/w500" + mov_backdrop_path;
                 Picasso.with(getActivity()).load(backdrop_path).error(R.mipmap.ic_launcher).into(mBackDropImage);
@@ -291,24 +297,23 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
 
             }
-            case MOVIE_TRAILER_LOADER_ID:{
-                Log.e(LOG_TAG,"MOVIE_TRAILER_LOADER_ID");
+            case MOVIE_TRAILER_LOADER_ID: {
+                Log.e(LOG_TAG, "MOVIE_TRAILER_LOADER_ID");
 
                 int iter = 0;
 
-                    do {
-                       iter++;
-                        if (iter == 1) {
-                            shareTrailer = YOU_TUBE_URL + cursor.getString(MovieDetailActivityFragment.COL_TRAILER_KEY);
-                        }
+                do {
+                    iter++;
+                    if (iter == 1) {
+                        shareTrailer = YOU_TUBE_URL + cursor.getString(MovieDetailActivityFragment.COL_TRAILER_KEY);
                     }
-                    while (cursor.moveToNext());
-                    cursor.moveToFirst();
-                    mTrailerAdapter.swapCursor(cursor);
-                Log.e(LOG_TAG,"playTrailer    " + shareTrailer);
+                }
+                while (cursor.moveToNext());
+                cursor.moveToFirst();
+                mTrailerAdapter.swapCursor(cursor);
+                Log.e(LOG_TAG, "playTrailer    " + shareTrailer);
 
 
-               //mTrailerAdapter.swapCursor(cursor);
                 break;
             }
         }
@@ -317,7 +322,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Log.e(LOG_TAG,"MOVIE_TRAILER_LOADER_ID Reset");
+        Log.e(LOG_TAG, "MOVIE_TRAILER_LOADER_ID Reset");
         mTrailerAdapter.swapCursor(null);
         mReviewAdapter.swapCursor(null);
     }
