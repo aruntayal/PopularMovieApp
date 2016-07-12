@@ -8,9 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
-import com.sampleproj.arun.moviereview.Data.MovieContentProvider;
-import com.sampleproj.arun.moviereview.Data.MovieContract;
-import com.sampleproj.arun.moviereview.Data.MovieDbHelper;
+import com.sampleproj.arun.moviereview.data.MovieContentProvider;
+import com.sampleproj.arun.moviereview.data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieDbHelper;
 
 public class TestProvider extends AndroidTestCase {
 

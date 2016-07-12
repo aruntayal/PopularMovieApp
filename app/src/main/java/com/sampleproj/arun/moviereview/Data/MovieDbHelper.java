@@ -1,13 +1,13 @@
-package com.sampleproj.arun.moviereview.Data;
+package com.sampleproj.arun.moviereview.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract.MovieEntry;
-import com.sampleproj.arun.moviereview.Data.MovieContract.TrailerEntry;
-import com.sampleproj.arun.moviereview.Data.MovieContract.ReviewEntry;
-import com.sampleproj.arun.moviereview.Data.MovieContract.FavouriteEntry;
+import com.sampleproj.arun.moviereview.data.MovieContract.MovieEntry;
+import com.sampleproj.arun.moviereview.data.MovieContract.TrailerEntry;
+import com.sampleproj.arun.moviereview.data.MovieContract.ReviewEntry;
+import com.sampleproj.arun.moviereview.data.MovieContract.FavouriteEntry;
 /**
  * Created by arunt on 4/12/2016.
  */
@@ -16,7 +16,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 7;
 
-    static final String DATABASE_NAME = "movie.db";
+    public static final String DATABASE_NAME = "movie.db";
 
     public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

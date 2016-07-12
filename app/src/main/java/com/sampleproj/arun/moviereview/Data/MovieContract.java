@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Data;
+package com.sampleproj.arun.moviereview.data;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

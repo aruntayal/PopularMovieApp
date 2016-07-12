@@ -41,14 +41,14 @@
             android:parentActivityName=".MainActivity"></activity>
 
         <provider
-            android:name=".Data.MovieContentProvider"
+            android:name=".data.MovieContentProvider"
             android:authorities="com.sampleproj.arun.moviereview"
             android:exported="false"
             android:syncable="true"/>
 
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".Sync.PopularMovieAuthenticatorService">
+        <service android:name=".sync.PopularMovieAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -59,7 +59,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".Sync.PopularMovieSyncService"
+            android:name=".sync.PopularMovieSyncService"
             android:exported="true"
             >
             <intent-filter>

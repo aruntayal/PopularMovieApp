@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
-import com.sampleproj.arun.moviereview.Data.MovieDbHelper;
+import com.sampleproj.arun.moviereview.data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieDbHelper;
 
 /**
  * Created by arunt on 6/9/2016.

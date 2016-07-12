@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.AsyncTasks;
+package com.sampleproj.arun.moviereview.asynctasks;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 import com.sampleproj.arun.moviereview.R;
 
 /**

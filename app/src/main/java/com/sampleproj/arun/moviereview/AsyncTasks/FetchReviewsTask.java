@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.AsyncTasks;
+package com.sampleproj.arun.moviereview.asynctasks;
 
 /**
  * Created by arunt on 6/10/2016.
@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;

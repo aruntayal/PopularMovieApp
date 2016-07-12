@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Adapters;
+package com.sampleproj.arun.moviereview.adapters;
 
 import android.content.Context;
 import android.database.Cursor;

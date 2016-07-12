@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Data;
+package com.sampleproj.arun.moviereview.data;
 
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
@@ -21,22 +21,22 @@ public class MovieContentProvider extends ContentProvider {
 
     private static final String LOG_TAG = MovieContentProvider.class.getSimpleName();
     // Codes For UriMatcher
-    static final int MOVIE = 100;
-    static final int MOVIE_WITH_ID = 101;
-    static final int TRAILERS = 102;
-    static final int MOVIE_TRAILERS = 103;
-    static final int MOVIE_TRAILER_WITH_ID = 104;
-    static final int REVIEWS = 105;
-    static final int MOVIE_REVIEWS = 106;
-    static final int MOVIE_REVIEW_WITH_ID = 107;
-    static final int MOVIE_FAVOURITE = 108;
-    static final int MOVIE_FAVOURITE_WITH_ID = 109;
+    public static final int MOVIE = 100;
+    public static final int MOVIE_WITH_ID = 101;
+    public static final int TRAILERS = 102;
+    public static final int MOVIE_TRAILERS = 103;
+    public static final int MOVIE_TRAILER_WITH_ID = 104;
+    public static final int REVIEWS = 105;
+    public static final int MOVIE_REVIEWS = 106;
+    public static final int MOVIE_REVIEW_WITH_ID = 107;
+    public static final int MOVIE_FAVOURITE = 108;
+    public static final int MOVIE_FAVOURITE_WITH_ID = 109;
 
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private MovieDbHelper mOpenHelper;
 
-     static UriMatcher buildUriMatcher() {
+    public static UriMatcher buildUriMatcher() {
         // Build a UriMatcher by adding a specific code to return based on a match
         // It's common to use NO_MATCH as the code for this case.
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);

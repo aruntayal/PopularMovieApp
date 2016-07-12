@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.sampleproj.arun.moviereview.Fragments.MovieDetailActivityFragment;
+import com.sampleproj.arun.moviereview.fragments.MovieDetailActivityFragment;
 
 public class MovieDetailActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Sync;
+package com.sampleproj.arun.moviereview.sync;
 
 import android.app.Service;
 import android.content.Intent;

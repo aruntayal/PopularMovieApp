@@ -3,7 +3,7 @@ package com.sampleproj.arun.moviereview;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 
 public class TestMovieContract extends AndroidTestCase {
 

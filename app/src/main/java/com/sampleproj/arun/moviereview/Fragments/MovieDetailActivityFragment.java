@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Fragments;
+package com.sampleproj.arun.moviereview.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,12 +24,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.sampleproj.arun.moviereview.Adapters.ReviewAdapter;
-import com.sampleproj.arun.moviereview.Adapters.TrailerAdapter;
-import com.sampleproj.arun.moviereview.AsyncTasks.FetchReviewsTask;
-import com.sampleproj.arun.moviereview.AsyncTasks.FetchTrailersTask;
-import com.sampleproj.arun.moviereview.AsyncTasks.ToggleFavouriteTask;
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.adapters.ReviewAdapter;
+import com.sampleproj.arun.moviereview.adapters.TrailerAdapter;
+import com.sampleproj.arun.moviereview.asynctasks.FetchReviewsTask;
+import com.sampleproj.arun.moviereview.asynctasks.FetchTrailersTask;
+import com.sampleproj.arun.moviereview.asynctasks.ToggleFavouriteTask;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 import com.sampleproj.arun.moviereview.R;
 import com.squareup.picasso.Picasso;
 

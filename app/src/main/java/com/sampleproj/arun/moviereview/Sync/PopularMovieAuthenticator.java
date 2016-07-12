@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Sync;
+package com.sampleproj.arun.moviereview.sync;
 
 /**
  * Created by arunt on 6/19/2016.

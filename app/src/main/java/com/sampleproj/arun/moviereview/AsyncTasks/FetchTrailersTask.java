@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.AsyncTasks;
+package com.sampleproj.arun.moviereview.asynctasks;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;

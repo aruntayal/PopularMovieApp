@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Fragments;
+package com.sampleproj.arun.moviereview.fragments;
 
 
 import android.content.SharedPreferences;
@@ -21,9 +21,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.sampleproj.arun.moviereview.Adapters.movieAdapter;
-import com.sampleproj.arun.moviereview.Data.MovieContract;
-import com.sampleproj.arun.moviereview.Sync.PopularMovieSyncAdapter;
+import com.sampleproj.arun.moviereview.adapters.movieAdapter;
+import com.sampleproj.arun.moviereview.data.MovieContract;
+import com.sampleproj.arun.moviereview.sync.PopularMovieSyncAdapter;
 import com.sampleproj.arun.moviereview.R;
 
 import java.util.ArrayList;

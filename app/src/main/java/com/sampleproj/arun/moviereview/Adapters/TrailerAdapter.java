@@ -1,5 +1,5 @@
 
-package com.sampleproj.arun.moviereview.Adapters;
+package com.sampleproj.arun.moviereview.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 import com.sampleproj.arun.moviereview.R;
 import com.squareup.picasso.Picasso;
 

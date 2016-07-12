@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.sampleproj.arun.moviereview.Fragments.MovieDetailActivityFragment;
+import com.sampleproj.arun.moviereview.fragments.MovieDetailActivityFragment;
 
-import com.sampleproj.arun.moviereview.Fragments.MovieFragment;
-import com.sampleproj.arun.moviereview.Sync.PopularMovieSyncAdapter;
+import com.sampleproj.arun.moviereview.fragments.MovieFragment;
+import com.sampleproj.arun.moviereview.sync.PopularMovieSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements MovieFragment.Callback {
     private boolean mTwoPane;

@@ -1,4 +1,4 @@
-package com.sampleproj.arun.moviereview.Sync;
+package com.sampleproj.arun.moviereview.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -16,7 +16,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 import com.sampleproj.arun.moviereview.R;
 import com.sampleproj.arun.moviereview.config;
 

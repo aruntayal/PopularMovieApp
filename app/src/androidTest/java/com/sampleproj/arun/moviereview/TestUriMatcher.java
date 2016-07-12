@@ -4,8 +4,8 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.sampleproj.arun.moviereview.Data.MovieContentProvider;
-import com.sampleproj.arun.moviereview.Data.MovieContract;
+import com.sampleproj.arun.moviereview.data.MovieContentProvider;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 
 public class TestUriMatcher extends AndroidTestCase {
 
