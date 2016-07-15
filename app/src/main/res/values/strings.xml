@@ -53,5 +53,18 @@
     <string name="Trailers">Trailers</string>
     <string name="sync_account_type">moviereview.arun.com</string>
      <string name="content_authority">com.sampleproj.arun.moviereview</string>
+    <string name="movie_data_not_available">No Movie Data Available</string>
+
+    <string name="network_not_available">No Network Connectivity</string>
+
+
+    <!-- Key name for storing location status in SharedPreferences -->
+    <string name="pref_pop_movie_status_key" translatable="false">movie-status</string>
+
+    <!-- Empty Movie Database -->
+    <string name="empty_movie_list">No Movie Information Available</string>
+    <string name="empty_movie_list_no_network">No Movie information available. The network is not available to fetch weather data.</string>
+    <string name="empty_movie_list_server_down">No Movie information available. The server is not returning data.</string>
+    <string name="empty_movie_list_server_error">No Movie information available. The server is not returning valid data. Please check for an updated version of Sunshine.</string>
 
 </resources>

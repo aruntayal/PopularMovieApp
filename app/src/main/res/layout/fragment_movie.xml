@@ -1,5 +1,9 @@
-
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/gridView"
@@ -10,5 +14,13 @@
         android:padding="@dimen/grid_item_movie_spacing"
 
         />
+    <TextView
+        android:id="@+id/empty_movie_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity ="center_horizontal"
+        android:text="No Movie Information Available"
+        />
 
 
+</FrameLayout>

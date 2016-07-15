@@ -14,11 +14,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.IntDef;
 import android.util.Log;
 
-import com.sampleproj.arun.moviereview.data.MovieContract;
 import com.sampleproj.arun.moviereview.R;
 import com.sampleproj.arun.moviereview.config;
+import com.sampleproj.arun.moviereview.data.MovieContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
@@ -37,6 +40,8 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = "ARUN_" + PopularMovieSyncAdapter.class.getSimpleName();
     public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+
+
     public PopularMovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -131,11 +136,13 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
+                setMovieStatus(getContext(), MOVIE_STATUS_SERVER_DOWN);
                 return;
             }
             movieJsonStr = buffer.toString();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in receiving data", e);
+            setMovieStatus(getContext(), MOVIE_STATUS_SERVER_DOWN);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return;
@@ -180,66 +187,75 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         // final String TMD_RELEASE_DATE = "release_date";
         //final String TMD_RELEASE_DATE = "release_date";
-        JSONObject movieJson = new JSONObject(movieJsonStr);
-        JSONArray movieArray = movieJson.getJSONArray(TMD_RESULT);
+        try {
+            JSONObject movieJson = new JSONObject(movieJsonStr);
+            JSONArray movieArray = movieJson.getJSONArray(TMD_RESULT);
 
 
-         String[] resultStrs = new String[movieArray.length()];
-        Log.e(LOG_TAG, "JSONARRAY length is " + Integer.toString(movieArray.length()));;
-        Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
-        Vector<ContentValues> favMovieVector = new Vector<ContentValues>(movieArray.length());
-        for(int i = 0; i < movieArray.length(); i++) {
-            // For now, using the format "Day, description, hi/low"
-            String day;
-            String description;
-            String highAndLow;
+            String[] resultStrs = new String[movieArray.length()];
+            Log.e(LOG_TAG, "JSONARRAY length is " + Integer.toString(movieArray.length()));
+            ;
+            Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
+            Vector<ContentValues> favMovieVector = new Vector<ContentValues>(movieArray.length());
+            for (int i = 0; i < movieArray.length(); i++) {
+                // For now, using the format "Day, description, hi/low"
+                String day;
+                String description;
+                String highAndLow;
 
-            // Get the JSON object representing the day
-            JSONObject movieObj = movieArray.getJSONObject(i);
-            Log.e(LOG_TAG,"movieObj is: " + movieObj.toString());
-            String poster_path = movieObj.getString(TMD_POSTER_PATH);
-            int id = movieObj.getInt(TMD_ID);
-            String overview = movieObj.getString(TMD_OVERVIEW);
-            String title = movieObj.getString(TMD_TITLE);
-            String date = movieObj.getString(TMD_RELEASE_DATE);
-            Double vote_avg = movieObj.getDouble(TMD_VOTE_AVG);
-            Double popularity = movieObj.getDouble(TMD_POPULARITY);
-            String backdrop_path = movieObj.getString(TMD_BACKDROPPATH);
-         //   Log.e(LOG_TAG,"#####" + vote_avg.toString() + "#####" + popularity.toString() + "#####" + backdrop_path + "#####");
+                // Get the JSON object representing the day
+                JSONObject movieObj = movieArray.getJSONObject(i);
+                Log.e(LOG_TAG, "movieObj is: " + movieObj.toString());
+                String poster_path = movieObj.getString(TMD_POSTER_PATH);
+                int id = movieObj.getInt(TMD_ID);
+                String overview = movieObj.getString(TMD_OVERVIEW);
+                String title = movieObj.getString(TMD_TITLE);
+                String date = movieObj.getString(TMD_RELEASE_DATE);
+                Double vote_avg = movieObj.getDouble(TMD_VOTE_AVG);
+                Double popularity = movieObj.getDouble(TMD_POPULARITY);
+                String backdrop_path = movieObj.getString(TMD_BACKDROPPATH);
+                //   Log.e(LOG_TAG,"#####" + vote_avg.toString() + "#####" + popularity.toString() + "#####" + backdrop_path + "#####");
 
-            // highAndLow = formatHighLows(high, low);
-            ContentValues movieValues = new ContentValues();
-            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID,id);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER,poster_path);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_DESC,overview);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME,title);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,date);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH,backdrop_path);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY,popularity);
-            movieValues.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, vote_avg);
-        //    resultStrs[i] = String.valueOf(id) + "#####" + backdrop_path + "#####" + String.valueOf(popularity) + "#####" + String.valueOf(vote_avg);
-            Log.e(LOG_TAG,"movieVAlues is: " + movieValues.toString());
-            cVVector.add(movieValues);
-            ContentValues favMovieValues = new ContentValues();
-            favMovieValues.put(MovieContract.FavouriteEntry.COLUMN_MOVIE_ID,id);
-            favMovieValues.put(MovieContract.FavouriteEntry.COLUMN_FAVOURITE_STATUS,0);
-            favMovieVector.add(favMovieValues);
+                // highAndLow = formatHighLows(high, low);
+                ContentValues movieValues = new ContentValues();
+                movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, id);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER, poster_path);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_DESC, overview);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, title);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, date);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, backdrop_path);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_POPULARITY, popularity);
+                movieValues.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, vote_avg);
+                //    resultStrs[i] = String.valueOf(id) + "#####" + backdrop_path + "#####" + String.valueOf(popularity) + "#####" + String.valueOf(vote_avg);
+                Log.e(LOG_TAG, "movieVAlues is: " + movieValues.toString());
+                cVVector.add(movieValues);
+                ContentValues favMovieValues = new ContentValues();
+                favMovieValues.put(MovieContract.FavouriteEntry.COLUMN_MOVIE_ID, id);
+                favMovieValues.put(MovieContract.FavouriteEntry.COLUMN_FAVOURITE_STATUS, 0);
+                favMovieVector.add(favMovieValues);
+            }
+            // Log.e("ARUN123456", resultStrs.toString());
+            //return resultStrs;
+
+            int inserted = 0;
+            // add to database
+            //Log.e(LOG_TAG,String. (cVVector.size()).;
+            if (cVVector.size() > 0) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+                inserted = getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
+            }
+            if (favMovieVector.size() > 0) {
+                ContentValues[] cvArray = new ContentValues[favMovieVector.size()];
+                favMovieVector.toArray(cvArray);
+                inserted = getContext().getContentResolver().bulkInsert(MovieContract.FavouriteEntry.CONTENT_URI, cvArray);
+            }
+            setMovieStatus(getContext(), MOVIE_STATUS_OK);
         }
-       // Log.e("ARUN123456", resultStrs.toString());
-        //return resultStrs;
-
-        int inserted = 0;
-        // add to database
-        //Log.e(LOG_TAG,String. (cVVector.size()).;
-        if ( cVVector.size() > 0 ) {
-            ContentValues[] cvArray = new ContentValues[cVVector.size()];
-            cVVector.toArray(cvArray);
-            inserted = getContext().getContentResolver().bulkInsert(MovieContract.MovieEntry.CONTENT_URI, cvArray);
-        }
-        if ( favMovieVector.size() > 0 ) {
-            ContentValues[] cvArray = new ContentValues[favMovieVector.size()];
-            favMovieVector.toArray(cvArray);
-            inserted = getContext().getContentResolver().bulkInsert(MovieContract.FavouriteEntry.CONTENT_URI, cvArray);
+        catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
+            setMovieStatus(getContext(), MOVIE_STATUS_SERVER_INVALID);
         }
     }
 
@@ -314,5 +330,29 @@ public class PopularMovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void initializeSyncAdapter(Context context) {
         getSyncAccount(context);
+    }
+
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({MOVIE_STATUS_OK, MOVIE_STATUS_SERVER_DOWN, MOVIE_STATUS_SERVER_INVALID,  MOVIE_STATUS_UNKNOWN})
+    public @interface MovieStatus {}
+
+    public static final int MOVIE_STATUS_OK = 0;
+    public static final int MOVIE_STATUS_SERVER_DOWN = 1;
+    public static final int MOVIE_STATUS_SERVER_INVALID = 2;
+    public static final int MOVIE_STATUS_UNKNOWN = 3;
+
+
+    /**
+     * Sets the location status into shared preference.  This function should not be called from
+     * the UI thread because it uses commit to write to the shared preferences.
+     * @param c Context to get the PreferenceManager from.
+     * @param movieStatus The IntDef value to set
+     */
+    static private void setMovieStatus(Context c, @MovieStatus int movieStatus){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor spe = sp.edit();
+        spe.putInt(c.getString(R.string.pref_pop_movie_status_key), movieStatus);
+        spe.commit();
     }
 }

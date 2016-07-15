@@ -19,19 +19,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sampleproj.arun.moviereview.R;
 import com.sampleproj.arun.moviereview.adapters.movieAdapter;
 import com.sampleproj.arun.moviereview.data.MovieContract;
 import com.sampleproj.arun.moviereview.sync.PopularMovieSyncAdapter;
-import com.sampleproj.arun.moviereview.R;
+import com.sampleproj.arun.moviereview.utilities.Utilities;
 
 import java.util.ArrayList;
 
 //import android.database.Cursor;
 
 
-public class MovieFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MovieFragment extends Fragment  implements LoaderManager.LoaderCallbacks<Cursor>,SharedPreferences.OnSharedPreferenceChangeListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -47,6 +49,7 @@ public class MovieFragment extends Fragment  implements LoaderManager.LoaderCall
     private movieAdapter mImageAdapter;
     private ArrayList<String> mGridData;
     private GridView mGridView;
+
     //private OnFragmentInteractionListener mListener;
 
 
@@ -84,6 +87,8 @@ public class MovieFragment extends Fragment  implements LoaderManager.LoaderCall
 
         mGridData = new ArrayList<>();
         mGridView = (GridView)rootView.findViewById(R.id.gridView);
+        View emptyView = (View)rootView.findViewById(R.id.empty_movie_list);
+        mGridView.setEmptyView(emptyView);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
                 Toast toast = Toast.makeText(getContext(), Integer.toString(position),  Toast.LENGTH_SHORT);
@@ -179,6 +184,7 @@ public class MovieFragment extends Fragment  implements LoaderManager.LoaderCall
         }
         Log.e("ARUN456", Integer.toString(iCount));
         mImageAdapter.swapCursor(cursor);
+        updateEmptyView();
     }
 
     @Override
@@ -203,6 +209,38 @@ public class MovieFragment extends Fragment  implements LoaderManager.LoaderCall
          * DetailFragmentCallback for when an item has been selected.
          */
         public void onItemSelected(Uri dateUri);
+    }
+
+    private void updateEmptyView() {
+        if ( mImageAdapter.getCount() == 0 ) {
+            TextView tv = (TextView) getView().findViewById(R.id.empty_movie_list);
+            if ( null != tv ) {
+                // if cursor is empty, why? do we have an invalid movie
+                int message = R.string.empty_movie_list;
+                @PopularMovieSyncAdapter.MovieStatus int location = Utilities.getMovieStatus(getActivity());
+                switch (location) {
+                    case PopularMovieSyncAdapter.MOVIE_STATUS_SERVER_DOWN:
+                        message = R.string.empty_movie_list_server_down;
+                        break;
+                    case PopularMovieSyncAdapter.MOVIE_STATUS_SERVER_INVALID:
+                        message = R.string.empty_movie_list_server_error;
+                        break;
+                    default:
+                        if (!Utilities.isNetworkAvailable(getActivity()) ) {
+                            message = R.string.empty_movie_list_no_network;
+                        }
+                }
+                tv.setText(message);
+            }
+        }
+    }
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_pop_movie_status_key))) {
+            updateEmptyView();
+        }
     }
 
 
