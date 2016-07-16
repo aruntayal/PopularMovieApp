@@ -25,49 +25,7 @@
             android:scaleType="fitXY"
             />
 
-       <GridLayout
-           android:layout_width="240dp"
-           android:layout_height="wrap_content"
-           android:rowCount="1"
-           android:columnCount="6"
-           android:layout_marginTop="20dp"
-          android:layout_gravity="center"
-
-           >
-
-           <ImageView
-               android:id="@+id/rating_img"
-               android:src="@drawable/ic_star_black_24dp"
-               android:layout_gravity="center"
-               />
-
-           <TextView
-               android:id="@+id/rating_num"
-               android:textSize="20sp"
-               android:textStyle="bold" />
-           <TextView
-               android:id="@+id/rating_oblique"
-               android:text="/"
-               android:textSize="20sp"
-               android:textStyle="bold"/>
-           <TextView
-               android:id="@+id/rating_denom"
-               android:text="10"
-               android:textSize="20sp"
-               android:textStyle="bold"
-               android:layout_marginRight="5dp"/>
-           <ImageView
-               android:id="@+id/release_img"
-               android:src="@drawable/ic_date_range_black_24dp"
-               android:layout_gravity="center"
-               />
-
-           <TextView
-               android:id="@+id/release_date"
-               android:textSize="20sp"
-               android:textStyle="bold"/>
-
-       </GridLayout>
+       <include layout="@layout/movie_detail" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -126,6 +84,7 @@
             android:textStyle="bold"
             />
         <android.support.v7.widget.CardView
+            android:id="@+id/reviewCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="16dp"
@@ -135,13 +94,14 @@
             card_view:cardCornerRadius="5dp">
 
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/movie_review_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="250dp"
                 android:divider="?android:dividerHorizontal"
                 android:showDividers="middle"
-                android:nestedScrollingEnabled="true"
+
+
                 />
         </android.support.v7.widget.CardView>
 

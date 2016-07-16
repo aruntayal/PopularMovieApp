@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MovieFragment.Cal
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;

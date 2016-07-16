@@ -10,6 +10,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,16 +23,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sampleproj.arun.moviereview.R;
 import com.sampleproj.arun.moviereview.adapters.ReviewAdapter;
 import com.sampleproj.arun.moviereview.adapters.TrailerAdapter;
 import com.sampleproj.arun.moviereview.asynctasks.FetchReviewsTask;
 import com.sampleproj.arun.moviereview.asynctasks.FetchTrailersTask;
 import com.sampleproj.arun.moviereview.asynctasks.ToggleFavouriteTask;
 import com.sampleproj.arun.moviereview.data.MovieContract;
-import com.sampleproj.arun.moviereview.R;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -46,7 +47,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
     private ImageView mBackDropImage;
     private TextView mOverView;
-    private ListView mReviewList;
+    private RecyclerView mReviewList;
     private GridView mTrailerGrid;
     private String mMovieStr;
     private Long mMovieId;
@@ -58,6 +59,8 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
     private TextView mRatingNum;
     private TextView mReleaseDate;
     View rootView;
+    private View mReviewCardView ;
+    private int mReviewPosition = RecyclerView.NO_POSITION;
     private static final int MOVIE_DETAIL_LOADER_ID = 1;
     private static final int MOVIE_REVIEW_LOADER_ID = 2;
     private static final int MOVIE_TRAILER_LOADER_ID = 3;
@@ -82,9 +85,11 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
         mOverView = (TextView) rootView.findViewById(R.id.movie_detail_overview);
         mRatingNum = (TextView) rootView.findViewById(R.id.rating_num);
         mReleaseDate = (TextView) rootView.findViewById(R.id.release_date);
-        mReviewList = (ListView) rootView.findViewById(R.id.movie_review_list);
+        mReviewList = (RecyclerView) rootView.findViewById(R.id.movie_review_list);
+        // Set the layout manager
+        mReviewList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mTrailerGrid = (GridView) rootView.findViewById(R.id.trailer_grid);
-
+        mReviewCardView = (View)rootView.findViewById(R.id.reviewCard);
         mTrailerGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
@@ -95,7 +100,7 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
             }
         });
 
-        mReviewAdapter = new ReviewAdapter(getActivity(), null, 0);
+        mReviewAdapter = new ReviewAdapter(getActivity());
         mReviewList.setAdapter(mReviewAdapter);
 
         mTrailerAdapter = new TrailerAdapter(getActivity(), null, 0);
@@ -268,6 +273,16 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
             case MOVIE_REVIEW_LOADER_ID: {
                 Log.e(LOG_TAG, "MOVIE_REVIEW_LOADER_ID");
                 mReviewAdapter.swapCursor(cursor);
+                if (mReviewPosition != RecyclerView.NO_POSITION) {
+                    // If we don't need to restart the loader, and there's a desired position to restore
+                    // to, do so now.
+                    mReviewList.smoothScrollToPosition(mReviewPosition);
+                }
+                Log.e("LOG_TAG", "MOVIE_REVIEW_LOADER_ID_ItemCount=" + Integer.toString(mReviewAdapter.getItemCount()));
+                if(mReviewAdapter.getItemCount() == 0)
+                {
+                    mReviewCardView.setVisibility(View.GONE);
+                }
                 break;
             }
             case MOVIE_DETAIL_LOADER_ID: {
